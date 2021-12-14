@@ -1,0 +1,8 @@
+{
+  "ouranos": {
+    "provider": "capistrano",
+    "auto_merge": false,
+    "repository": "pulibrary/ouranos",
+    "environments": ["staging"]
+  }
+}
