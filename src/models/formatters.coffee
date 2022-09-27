@@ -1,4 +1,5 @@
-sprintf = require("sprintfjs")
+Sprintf = require("sprintf").sprintf
+Timeago = require("timeago")
 
 class Formatter
   constructor: (@deployment, @extras) ->
@@ -7,7 +8,7 @@ class WhereFormatter extends Formatter
   message: ->
     output  = "Environments for #{@deployment.name}\n"
     output += "-----------------------------------------------------------------\n"
-    output += sprintf "%-15s\n", "Environment"
+    output += Sprintf "%-15s\n", "Environment"
     output += "-----------------------------------------------------------------\n"
 
     for environment in @deployment.environments
@@ -32,7 +33,7 @@ class LatestFormatter extends Formatter
   message: ->
     output  = "Recent #{@deployment.env} Deployments for #{@deployment.name}\n"
     output += @delimiter()
-    output += sprintf "%-15s | %-21s | %-38s\n", "Who", "What", "When"
+    output += Sprintf "%-15s | %-21s | %-38s\n", "Who", "What", "When"
     output += @delimiter()
 
     if @extras?
@@ -46,9 +47,9 @@ class LatestFormatter extends Formatter
           ref = "#{deployment.ref}(#{deployment.sha[0..7]})"
 
         login = @loginForDeployment(deployment)
-        timestamp = sprintf "%-21s", deployment.created_at
+        timestamp = Sprintf "%18s / %-21s", Timeago(deployment.created_at), deployment.created_at
 
-        output += sprintf "%-15s | %-21s | %38s\n", login, ref, timestamp
+        output += Sprintf "%-15s | %-21s | %38s\n", login, ref, timestamp
 
       output += @delimiter()
     output
