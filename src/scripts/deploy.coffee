@@ -27,6 +27,9 @@ defaultDeploymentEnvironment = () ->
 
 ###########################################################################
 module.exports = (robot) ->
+
+  DEFAULT_ROOM_NAME = process.env.DEFAULT_ROOM_NAME || 'robots'
+
   ###########################################################################
   # where can i deploy <app>
   #
@@ -134,7 +137,11 @@ module.exports = (robot) ->
 
     if robot.adapterName is "slack"
       deployment.user = user.name
-      deployment.room = robot.adapter.client.rtm.dataStore.getChannelGroupOrDMById(msg.message.user.room).name
+      slackChannelGroup = robot.adapter.client.rtm.dataStore.getChannelGroupOrDMById(msg.message.user.room)
+      if slackChannelGroup?
+        deployment.room = slackChannelGroup.name
+      else
+        deployment.room = DEFAULT_ROOM_NAME
 
     deployment.yubikey   = yubikey
     deployment.adapter   = robot.adapterName
